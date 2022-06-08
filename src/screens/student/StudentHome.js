@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import Header from '../../components/Header';
 import { colors } from '../../constants/colors';
@@ -33,6 +34,7 @@ function StudentHome({ navigation }) {
   const [pastQuestions, setPastquestions] = useState([]);
   const [filteredPastQuestions, setFilteredPastquestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [image, setimage] = useState([]);
   const [visible, setIsVisible] = useState(false);
 
@@ -62,10 +64,11 @@ function StudentHome({ navigation }) {
       setPastquestions(allData)
       setFilteredPastquestions(allData)
       console.log(allData)
+      setPageLoading(false)
     }
 
     getData();
-  })
+  }, [])
 
   const handleQuestionNav = (data) => {
     setimage([{uri: data.image}])
@@ -178,6 +181,11 @@ function StudentHome({ navigation }) {
               onPress={() => handleQuestionNav(item)}
             />
           ))}
+          {pageLoading && (
+            <View style={{flex: 1}}>
+              <ActivityIndicator size={'small'} color={colors.primary} />
+            </View>
+          )}
           {/* <CourseCard />
           <CourseCard />
           <CourseCard />
